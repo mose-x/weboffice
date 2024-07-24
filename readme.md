@@ -5,6 +5,54 @@
 - go 1.16+
 - gin framework
 
+## How to use
+```shell
+go get github.com/mose-x/weboffice
+```
+
+```go
+package main
+
+func InitRouter() {
+	// 初始化路由
+	e := gin.Default()
+
+	// 注册wps web office服务
+	provider := &Provider{}
+	weboffice.NewServer(weboffice.Config{
+		PreviewProvider:   provider,
+		UserProvider:      provider,
+		WatermarkProvider: provider,
+		EditProvider:      provider,
+		VersionProvider:   provider,
+		Logger:            weboffice.DefaultLogger(),
+		NotifyProvider:    provider,
+	}, e)
+	
+	// 启动服务
+	_ = e.Run(":8080")
+}
+```
+### 实现接口
+```go
+package main
+
+type Provider struct {
+}
+
+func (*Provider) GetFileWatermark(_ weboffice.Context, _ string) (*weboffice.GetWatermarkReply, error) {
+	return &weboffice.GetWatermarkReply{
+		Type:       1,
+		Value:      "mose",
+		FillStyle:  "rgba(192,192,192,0.6)",
+		Font:       "bold 20px Serif",
+		Rotate:     0.5,
+		Horizontal: 50,
+		Vertical:   50,
+	}, nil
+}
+```
+
 ### 实际效果
 
 --- --
