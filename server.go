@@ -12,8 +12,8 @@ import (
 	"time"
 )
 
-// userContext 用户上下文
-type userContext struct {
+// UserContext 用户上下文
+type UserContext struct {
 	context.Context
 
 	appID     string
@@ -29,22 +29,22 @@ type Server struct {
 	root   gin.IRouter
 }
 
-func (uc *userContext) AppID() string {
+func (uc *UserContext) AppID() string {
 	return uc.appID
 }
-func (uc *userContext) Token() string {
+func (uc *UserContext) Token() string {
 	return uc.token
 }
-func (uc *userContext) Query() url.Values {
+func (uc *UserContext) Query() url.Values {
 	return uc.query
 }
-func (uc *userContext) RequestID() string {
+func (uc *UserContext) RequestID() string {
 	return uc.requestID
 }
 
 // ParseContext 解析上下文
 func ParseContext(req *http.Request) Context {
-	uc := &userContext{
+	uc := &UserContext{
 		Context:   req.Context(),
 		appID:     req.Header.Get("X-App-ID"),
 		token:     req.Header.Get("X-WebOffice-Token"),
